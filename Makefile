@@ -16,6 +16,7 @@ all:
 		echo " - You must set TOKEN "; \
 		exit 3; \
 	fi
+	@echo "[+TOKEN] $(TOKEN)"
 	@echo "[*BUILD|1/2] $(SRC_DIR)/$(SRC_IMPLS)"
 	$(CC) \
 		$(CFLAGS) \
@@ -31,6 +32,7 @@ all:
 		-o $(OUT) \
 		$(LIBS) \
 		$(MAIN_EXTRA_LIBS) && echo "[+OUT|EXECUTABLE] $(OUT) " || exit 2
+	@echo "[+DONE] Done. Enjoy"
 clean:
 	@echo "[*CLEAN] Cleaning up object files from $(SRC_DIR)"
 	rm $(SRC_DIR)/*.o 2>/dev/null
