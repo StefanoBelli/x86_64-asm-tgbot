@@ -2,12 +2,17 @@ SHELL:=$(shell which bash)
 CC=gcc
 CFLAGS=-O2 -Wall -Wextra -std=c11
 LIBS=-lssl
-MAIN_EXTRA_LIBS=-lcrypto
+EXTRA_LIBS=-lcrypto
 SRC_DIR=src
 SRC_IMPLS=impls.c
 SRC_MAIN=main.S
+SRC_NETWORKING=networking.S
+SRC_UTIL=util.S
+UTIL_OBJF=util.o
+NETWORKING_OBJF=networking.o
 IMPLS_OBJF=impls.o
 OUT=tgbot
+ALL_OBJF_PATTERN="*.o"
 TOKEN=""
 
 all:
@@ -17,21 +22,31 @@ all:
 		exit 3; \
 	fi
 	@echo "[+TOKEN] $(TOKEN)"
-	@echo "[*BUILD|1/2] $(SRC_DIR)/$(SRC_IMPLS)"
+	@echo "[*BUILD|1/4] $(SRC_DIR)/$(SRC_IMPLS)"
 	$(CC) \
 		$(CFLAGS) \
 		$(SRC_DIR)/$(SRC_IMPLS) \
-		-c \
 		-o $(SRC_DIR)/$(IMPLS_OBJF) \
-		$(LIBS) && echo "[+OUT|OBJF] $(IMPLS_OBJF)" || exit 1
-	@echo "[*BUILD|2/2] $(SRC_DIR)/$(SRC_MAIN)"
+		-c && echo "[+OUT|OBJF] $(IMPLS_OBJF)" || exit 1
+	@echo "[*BUILD|2/4] $(SRC_DIR)/$(SRC_UTIL)"
 	$(CC) \
-		$(CFLAGS) \
-		$(SRC_DIR)/$(IMPLS_OBJF) \
+		$(SRC_DIR)/$(SRC_UTIL) \
+		-o $(SRC_DIR)/$(UTIL_OBJF) \
+		-c && echo "[+OUT|OBJF] $(UTIL_OBJF)" || exit 1 
+	@echo "[*BUILD|3/4] $(SRC_DIR)/$(SRC_NETWORKING)"
+	$(CC) \
+		$(SRC_DIR)/$(SRC_NETWORKING) \
+		-o $(SRC_DIR)/$(NETWORKING_OBJF) \
+		-c \
+		$(LIBS) \
+		$(EXTRA_LIBS) && echo "[+OUT|OBJF] $(NETWORKING_OBJF)" || exit 1
+	@echo "[*BUILD|4/4] $(SRC_DIR)/$(SRC_MAIN)"
+	$(CC) \
+		$(SRC_DIR)/*.o \
 		$(SRC_DIR)/$(SRC_MAIN) \
 		-o $(OUT) \
 		$(LIBS) \
-		$(MAIN_EXTRA_LIBS) && echo "[+OUT|EXECUTABLE] $(OUT) " || exit 2
+		$(EXTRA_LIBS) && echo "[+OUT|EXECUTABLE] $(OUT) " || exit 2
 	@echo "[+DONE] Done. Enjoy"
 clean:
 	@echo "[*CLEAN] Cleaning up object files from $(SRC_DIR)"
