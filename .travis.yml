@@ -1,4 +1,4 @@
 language: c
-compiler: gcc
+compiler: gcc-4.9
 install: sudo apt-get install openssl libssl-dev -y -qq
 script: make TOKEN="testtok" 
