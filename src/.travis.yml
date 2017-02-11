@@ -1,4 +1,0 @@
-language: c
-compiler: gcc
-install: apt install openssl libssl libssl-dev -y -qq
-script: make TOKEN="testtok" 
