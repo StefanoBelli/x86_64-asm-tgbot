@@ -11,16 +11,9 @@
 # +---------------------------------------------------+
 
 	.extern init_ssl_ctx
-	.extern __connect
-	.extern get_ssl
-	.extern __ssl_disconnect
-	
-	.globl main
+	.extern main_bot_loop
 
-## SEGMENT ##
-	.data
-op_req_getupdates:
-	.asciz "getUpdates?offset=%lld&timeout=30"
+	.globl main
 
 ## SEGMENT ##
 	.text
@@ -28,23 +21,9 @@ main: #entry point
 	call init_ssl_ctx
 	cmp $0,%rax #checks if NULL 
 	je failure
-	pushq %rax
+	
+	#movq %rax,%rdi
+	#call main_bot_loop
 
-	call __connect
-	pushq %rax
-
-	movq %rax, %rsi
-	popq %rbx
-	popq %rax
-	pushq %rbx
-	movq %rax, %rdi
-	call get_ssl
-
-	movq %rax,%rsi
-	popq %rax
-	movq %rax,%rdi
-	call __ssl_disconnect
-
-	popq %rax
 	xor %eax,%eax
 	ret
