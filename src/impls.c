@@ -1,3 +1,4 @@
+#define _POSIX_C_SOURCE 201112L
 #include <openssl/ssl.h>
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -9,7 +10,7 @@
 
 struct address_info {
     socklen_t len;
-    struct sockaddr* address;
+    struct sockaddr address;
 };
 
 void _impl_OpenSSL_add_all_algorithms() 
