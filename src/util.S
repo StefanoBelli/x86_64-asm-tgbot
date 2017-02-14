@@ -15,11 +15,11 @@ failure: #exit with failure code
 https_get_request:
 	pushq %rdi
 	pushq %rsi
-	#getaddrinfo_sockaddr
-	#movq %rax,%rdi
-	#getaddrinfo_sockaddr_len
-	#movq %rax,%rsi
 
+  call _impl_get_tghost_addr
+    
+#movq $socklen %rdi
+#movq $addr %rsi
 	call __connect
 	pushq %rax
 
