@@ -9,21 +9,25 @@
 # +---------------------------------------------------+
 # <(C) COPYLEFT, Stefano Belli <stefano9913@gmail.com>
 # +---------------------------------------------------+
-
+	
+	.extern failure
 	.extern init_ssl_ctx
 	.extern main_bot_loop
+	#.extern _impl_daemon
 
 	.globl main
 
 ## SEGMENT ##
 	.text
 main: #entry point
+	#call _impl_daemon
+
 	call init_ssl_ctx
 	cmp $0,%rax #checks if NULL 
 	je failure
-	
-	#movq %rax,%rdi
-	#call main_bot_loop
+
+	movq %rax,%rdi
+	call main_bot_loop
 
 	xor %eax,%eax
 	ret

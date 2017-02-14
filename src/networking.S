@@ -12,10 +12,12 @@
 	.extern socket
 	.extern connect
 	.extern close
+	.extern _impl_resolve_and_connect
 	.extern failure
 
 ## SEGMENT ##
 	.text
+/* Required: none */
 init_ssl_ctx:
 	call SSL_library_init
 	call _impl_OpenSSL_add_all_algorithms
@@ -27,9 +29,6 @@ init_ssl_ctx:
 	ret
 
 __connect:
-	pushq %rdi
-   pushq %rsi
-
 	movq $2, %rdi
 	movq $1, %rsi
 	movq $0, %rdx
@@ -40,17 +39,17 @@ __connect:
 	jl failure
 
 	movq %rax,%rdi
-	popq %rax
-	popq %rdx
-	popq %rsi
-	pushq %rax
-	call connect
+	call _impl_resolve_and_connect
 	cmp $0,%rax
-	jne failure
+	jl failure
 
 	popq %rax
 	ret
 
+/* Required:
+   - RDI register: socket descriptor
+	- RSI register: SSL wrapper
+*/
 __ssl_disconnect:
 	call close
 	cmp $0,%rax
@@ -64,14 +63,26 @@ __ssl_disconnect:
 
 	ret
 
+/* Required:
+	- RDI register: SSL context
+	- RSI register: socket descriptor
+*/
 get_ssl:
+	pushq %rsi
+
 	cmp $0,%rdi
 	je failure
 
 	call SSL_new
 	pushq %rax
 
-	movq %rax,%rdi
+	cmp $0,%rax
+	je failure
+
+	popq %rbx
+	popq %rsi
+	pushq %rbx
+	movq %rbx,%rdi
 	call SSL_set_fd
 
 	popq %rax

@@ -4,36 +4,42 @@
 #include <sys/types.h>
 #include <netdb.h>
 #include <string.h>
+#include <unistd.h>
 
 #define TGHOST "api.telegram.org"
 #define HTTPS "https"
-
-struct address_info {
-    socklen_t len;
-    struct sockaddr address;
-};
 
 void _impl_OpenSSL_add_all_algorithms() 
 {
 	OpenSSL_add_all_algorithms();
 }
 
-struct address_info _impl_get_tghost_addr()
+int _impl_resolve_and_connect(int sockfd)
 {
    struct addrinfo hints, *query_res;
    memset(&hints,0, sizeof(struct addrinfo));
    
-   hints.ai_family=AF_INET;
+   hints.ai_family=AF_UNSPEC;
    hints.ai_socktype=SOCK_STREAM;
 
-   getaddrinfo(TGHOST,HTTPS,&hints,&query_res);
-
-   struct address_info infoaddr;
-   memset(&infoaddr,0,sizeof(struct address_info));
-
-   infoaddr.address=query_res->ai_addr[0];
-   infoaddr.len=query_res->ai_addrlen;
+   if(getaddrinfo(TGHOST,HTTPS,&hints,&query_res) != 0) 
+		return -1;
    
+	if(connect(sockfd,query_res->ai_addr,query_res->ai_addrlen) == -1) {
+		freeaddrinfo(query_res);
+		return -1;
+	}
+
    freeaddrinfo(query_res);
-   return infoaddr;
+   return 0;
 }
+
+void _impl_daemon() 
+{
+	if(fork())
+		exit(0);
+
+	if(setsid() < 0)
+		exit(1);
+}
+
