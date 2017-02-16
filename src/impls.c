@@ -1,3 +1,7 @@
+#ifndef TOKEN
+#pragma error("ABORTING BY DIRECTIVES: you must define a TOKEN!!")
+#endif
+
 #define _POSIX_C_SOURCE 201112L
 #include <openssl/ssl.h>
 #include <sys/socket.h>
@@ -5,9 +9,12 @@
 #include <netdb.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h>
 
+#define MAX_HTTP_GET_QUERY_SIZE 4096
 #define TGHOST "api.telegram.org"
 #define HTTPS "https"
+#define UAGENT "asmx86bot"
 
 void _impl_OpenSSL_add_all_algorithms() 
 {
@@ -41,5 +48,10 @@ void _impl_daemon()
 
 	if(setsid() < 0)
 		exit(1);
+}
+
+void _impl_compose_http_get_query(const char* request, char* dest)
+{
+	snprintf(dest,MAX_HTTP_GET_QUERY_SIZE,"GET /bot"TOKEN"/%s HTTP/1.1\r\nUser-Agent: "UAGENT"\r\nConnection: close\r\nHost: "TGHOST"\r\n\r\n",request);
 }
 

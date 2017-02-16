@@ -29,6 +29,7 @@ all:
 	$(CC) \
 		$(CFLAGS) \
 		$(SRC_DIR)/$(SRC_IMPLS) \
+		-DTOKEN=\"$(TOKEN)\" \
 		-o $(SRC_DIR)/$(IMPLS_OBJF) \
 		-c && echo "[+OUT|OBJF] $(IMPLS_OBJF)" || exit 1
 	@echo "[*BUILD|2/$(MAX_SRCS)] $(SRC_DIR)/$(SRC_UTIL)"

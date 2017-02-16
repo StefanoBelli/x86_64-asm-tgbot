@@ -15,5 +15,6 @@ main_bot_loop:
 	#call https_get_request
 	#take the value from https_get_request
 	#pass to the json parser
+	movq $op_getupdates_fmt,%rsi
 	call https_get_request
 	#jmp main_bot_loop
