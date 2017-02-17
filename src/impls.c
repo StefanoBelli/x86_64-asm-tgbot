@@ -32,10 +32,10 @@ int _impl_resolve_and_connect(int sockfd)
    if(getaddrinfo(TGHOST,HTTPS,&hints,&query_res) != 0) 
 		return -1;
    
-	if(connect(sockfd,query_res->ai_addr,query_res->ai_addrlen) == -1) {
-		freeaddrinfo(query_res);
+   if(connect(sockfd,query_res->ai_addr,query_res->ai_addrlen) == -1) {
+        freeaddrinfo(query_res);
 		return -1;
-	}
+   }
 
    freeaddrinfo(query_res);
    return 0;
@@ -52,6 +52,12 @@ void _impl_daemon()
 
 void _impl_compose_http_get_query(const char* request, char* dest)
 {
-	snprintf(dest,MAX_HTTP_GET_QUERY_SIZE,"GET /bot"TOKEN"/%s HTTP/1.1\r\nUser-Agent: "UAGENT"\r\nConnection: close\r\nHost: "TGHOST"\r\n\r\n",request);
+	snprintf(dest,MAX_HTTP_GET_QUERY_SIZE,
+            "GET /bot"TOKEN"/%s HTTP/1.1\r\n \
+            User-Agent: "UAGENT"\r\n \
+            Connection: close\r\n \
+            Host: "TGHOST"\r\n \
+            \r\n",
+            request);
 }
 

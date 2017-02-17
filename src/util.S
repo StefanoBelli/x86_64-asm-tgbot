@@ -1,3 +1,9 @@
+    .macro get_respbody haystack,needle
+    movq \haystack,%rdi
+    movq \needle,%rsi
+    call strstr
+    .endm
+    
 	.global failure
 	.global https_get_request
 
@@ -10,6 +16,11 @@
 	.extern SSL_read
 	
 ## SEGMENT ##
+    .data
+sepr:
+    .ascii "\r\n\r\n"
+    
+## SEGMENT ##
 	.bss
 	.lcomm http_get_query 4096 #change this if strictly required
 	.lcomm http_get_response 8192 #I suggest not to change this size
@@ -21,6 +32,12 @@ failure: #exit with failure code
 	movq $1,%rax
 	int $0x80
 
+/* Required:
+   - RDI register: full response
+*/
+parse:
+    get_respbody %rdi,$sepr
+    
 /* Required:
 	- RDI register: SSL context 
 	- RSI register: telegram bot api requested operation
