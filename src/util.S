@@ -1,5 +1,6 @@
 	.global failure
 	.global https_get_request
+	.global parse_http_response
 
 	.extern __connect
 	.extern get_ssl
@@ -20,6 +21,14 @@ failure: #exit with failure code
 	movq $1,%rbx
 	movq $1,%rax
 	int $0x80
+
+/* Required:
+	- RDI register: full response
+*/
+parse_http_response:
+	pushq %rdi
+	popq %rdi
+	ret
 
 /* Required:
 	- RDI register: SSL context 

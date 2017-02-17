@@ -17,4 +17,6 @@ main_bot_loop:
 	#pass to the json parser
 	movq $op_getupdates_fmt,%rsi
 	call https_get_request
+	movq %rax,%rdi
+	call parse_http_response
 	#jmp main_bot_loop
