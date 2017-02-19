@@ -1,5 +1,5 @@
 #ifndef TOKEN
-#pragma error("ABORTING BY DIRECTIVES: you must define a TOKEN!!")
+#error ABORTING BY DIRECTIVES: you must define a TOKEN!!
 #endif
 
 #define _POSIX_C_SOURCE 201112L
