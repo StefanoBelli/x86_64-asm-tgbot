@@ -69,5 +69,4 @@ https_get_request:
 	popq %rdi #sfd
 	call __ssl_disconnect
 
-	movq $http_get_response,%rax
 	ret

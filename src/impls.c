@@ -71,6 +71,7 @@ void _impl_compose_http_get_query(const char* request, char* dest)
 
 essentials_t _impl_parse_http_response(const char* full)
 {
+	printf("%s\n",full);
 	essentials_t data;
 	memset(&data,0,sizeof(essentials_t));
 
