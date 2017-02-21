@@ -11,10 +11,18 @@
 #include <unistd.h>
 #include <stdio.h>
 
+#define MAX_MSG_SIZE BUFSIZ
 #define MAX_HTTP_GET_QUERY_SIZE 4096
+
 #define TGHOST "api.telegram.org"
 #define HTTPS "https"
 #define UAGENT "asmx86bot"
+
+typedef struct essentials {
+	int http_success;
+	long long chat_id,update_id;
+	char message[MAX_MSG_SIZE];
+} essentials_t;
 
 void _impl_OpenSSL_add_all_algorithms() 
 {
@@ -59,5 +67,25 @@ void _impl_compose_http_get_query(const char* request, char* dest)
 			Host: "TGHOST"\r\n \
 			\r\n",
 			request);
+}
+
+essentials_t _impl_parse_http_response(const char* full)
+{
+	essentials_t data;
+	memset(&data,0,sizeof(essentials_t));
+
+	if (strncmp(full, "HTTP/1.1 200 OK", 15)) {
+		data.http_success = 0;
+		return data;
+	}
+
+	data.http_success = 1;
+
+	char* newpos = strstr(full,"\r\n\r\n");
+	if(!newpos)
+		return data;
+
+	
+	return data;
 }
 
