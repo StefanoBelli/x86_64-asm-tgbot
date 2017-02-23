@@ -13,11 +13,6 @@
 	.extern X509_free
 
 ## SEGMENT ##
-	.data
-http_header_separator:
-	.ascii "\r\n\r\n"
-
-## SEGMENT ##
 	.bss
 	.lcomm http_get_query 4096 #change this if strictly required
 	.lcomm http_get_response 8192 #I suggest not to change this size
@@ -28,18 +23,6 @@ failure: #exit with failure code
 	movq $1,%rbx
 	movq $1,%rax
 	int $0x80
-
-/* Required:
-	- RDI register: full response
-*/
-parse_http_response:
-	movq $http_header_separator,%rsi
-	call strstr
-
-	cmp $0,%rax
-	je failure
-
-	ret
 
 /* Required:
 	- RDI register: SSL context 

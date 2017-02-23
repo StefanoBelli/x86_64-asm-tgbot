@@ -12,10 +12,12 @@
 #include <stdio.h>
 
 #define MAX_HTTP_GET_QUERY_SIZE 4096
+#define MAX_BOTOP_SIZE 100
 
 #define TGHOST "api.telegram.org"
 #define HTTPS "https"
 #define UAGENT "asmx86bot"
+#define BOTOP_TIMEOUT "30"
 
 void _impl_OpenSSL_add_all_algorithms() 
 {
@@ -60,4 +62,26 @@ void _impl_compose_http_get_query(const char* request, char* dest)
 			"Host: "TGHOST"\r\n"
 			"\r\n",
 			request);
+}
+
+void _impl_get_value_from_kvpair(const char* resp, const char *sep, char* dest)
+{
+	int i=0;
+
+	while(resp[i] != *sep) {
+		dest[i] = resp[i];
+		i++;
+	}
+	
+	dest[i]=0;
+}
+
+void _impl_compose_botop(const char* off, char* dest)
+{
+	snprintf(dest,MAX_BOTOP_SIZE,"getUpdates?timeout="BOTOP_TIMEOUT"&offset=%s&limit=1",off);
+}
+
+void _impl_ltoa(long n, char* ntoa)
+{
+	sprintf(ntoa,"%ld",n);
 }
