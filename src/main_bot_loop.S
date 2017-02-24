@@ -38,7 +38,6 @@
 	leaq (\dest),%rdx
 	call _impl_get_value_from_kvpair
 	.endm
-	
 
 ## SEGMENT ##
 	.data
@@ -56,9 +55,9 @@ kv_pair_end:
 
 ## SEGMENT ##
 	.text
-main_bot_loop:
+main_bot_loop:	
 	pushq %rdi
-	
+
 	movq $updateid_dest,%rdi
 	leaq (query),%rsi
 	call _impl_compose_botop
@@ -68,8 +67,8 @@ main_bot_loop:
 	movq $query,%rsi
 	call https_get_request
 
-	match_key %rax,$update_id,$kv_pair_sepr,$kv_pair_end,updateid_dest
-	
+   match_key %rax,$update_id,$kv_pair_sepr,$kv_pair_end,updateid_dest
+
 	movq $updateid_dest,%rdi
 	call atol
 

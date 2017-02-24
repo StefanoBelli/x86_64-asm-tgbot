@@ -2,15 +2,9 @@
 	.global https_get_request
 	.global parse_http_response
 
-	.extern __connect
-	.extern get_ssl
-	.extern __ssl_disconnect
-	.extern SSL_connect
 	.extern _impl_compose_http_get_query
 	.extern SSL_write
 	.extern SSL_read
-	.extern SSL_get_peer_certificate
-	.extern X509_free
 
 ## SEGMENT ##
 	.bss
@@ -35,30 +29,6 @@ https_get_request:
 	leaq (http_get_query),%rsi
 	call _impl_compose_http_get_query
 
-	call __connect
-	pushq %rax
-
-	popq %rax
-	popq %rdi
-	pushq %rax
-	movq %rax,%rsi
-	call get_ssl
-	pushq %rax
-
-	movq %rax,%rdi
-	call SSL_connect
-	cmp $1,%rax
-	jne failure
-
-	popq %rdi
-	pushq %rdi
-	call SSL_get_peer_certificate
-	cmp $0,%rax
-	je failure
-
-	movq %rax,%rdi
-	call X509_free
-
 	popq %rdi 
 	pushq %rdi 
 	movq $http_get_query, %rsi
@@ -68,17 +38,11 @@ https_get_request:
 	jle failure
 
 	popq %rdi
-	pushq %rdi
 	leaq (http_get_response),%rsi
 	movq $8192,%rdx
 	call SSL_read
 	cmp $0,%rax
 	jle failure
-
-	popq %rax
-	movq %rax,%rsi #ssl
-	popq %rdi #sfd
-	call __ssl_disconnect
 
 	movq $http_get_response,%rax
 	ret
