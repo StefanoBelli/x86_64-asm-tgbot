@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netdb.h>
+#include <netinet/tcp.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -58,10 +59,10 @@ void _impl_compose_http_get_query(const char* request, char* dest)
 	snprintf(dest,MAX_HTTP_GET_QUERY_SIZE,
 			"GET /bot"TOKEN"/%s HTTP/1.1\r\n"
 			"User-Agent: "UAGENT"\r\n"
-			"Connection: close\r\n"
 			"Host: "TGHOST"\r\n"
 			"\r\n",
 			request);
+	//printf("HEADER BYTES: %d\nHEADER CONTAINS: %s\n==",strlen(dest),dest);
 }
 
 void _impl_get_value_from_kvpair(const char* resp, const char *sep, char* dest)
@@ -84,4 +85,17 @@ void _impl_compose_botop(const char* off, char* dest)
 void _impl_ltoa(long n, char* ntoa)
 {
 	sprintf(ntoa,"%ld",n);
+}
+
+int _impl_enable_tcp_keepalive(int sockfd) 
+{
+	int enabled = 1, probe_intvl = 67;
+	socklen_t optsize = sizeof(int);
+
+	if(setsockopt(sockfd,SOL_SOCKET,SO_KEEPALIVE,&enabled,optsize) == -1)
+		return 1;
+	if(setsockopt(sockfd,IPPROTO_TCP,TCP_KEEPINTVL,&probe_intvl,optsize) == -1)
+		return 1;
+
+	return 0;
 }

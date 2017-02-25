@@ -29,10 +29,12 @@ https_get_request:
 	leaq (http_get_query),%rsi
 	call _impl_compose_http_get_query
 
-	popq %rdi 
-	pushq %rdi 
+	movq $http_get_query,%rdi
+	call strlen
+	movq %rax,%rdx
 	movq $http_get_query, %rsi
-	movq $4096, %rdx 
+	popq %rdi
+	pushq %rdi
 	call SSL_write
 	cmp $0,%rax
 	jle failure

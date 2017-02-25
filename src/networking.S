@@ -14,6 +14,7 @@
 	.extern close
 	.extern _impl_resolve_and_connect
 	.extern failure
+	.extern _impl_enable_tcp_keepalive
 
 ## SEGMENT ##
 	.text
@@ -33,12 +34,19 @@ __connect:
 	movq $1, %rsi
 	movq $0, %rdx
 	call socket
-	pushq %rax
-
 	cmp $0,%rax
 	jl failure
 
+	pushq %rax
+
 	movq %rax,%rdi
+	call _impl_enable_tcp_keepalive
+	cmp $1,%rax
+	je failure
+
+	popq %rdi
+	pushq %rdi
+	
 	call _impl_resolve_and_connect
 	cmp $0,%rax
 	jl failure

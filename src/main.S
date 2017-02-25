@@ -17,6 +17,7 @@
 	.extern failure
 	.extern init_ssl_ctx
 	.extern main_bot_loop
+	.extern __connect
 	#.extern _impl_daemon
 
 	.globl main

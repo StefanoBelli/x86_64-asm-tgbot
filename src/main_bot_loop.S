@@ -17,21 +17,21 @@
 	call strstr
 
 	cmp $0,%rax
-	je failure
+	je reloop
 
 	movq %rax,%rdi
 	movq \kvsep,%rsi
 	call strtok
 
 	cmp $0,%rax
-	je failure
+	je reloop
 	
 	movq $0,%rdi
 	movq \kvsep,%rsi
 	call strtok
 
 	cmp $0,%rax
-	je failure
+	je reloop
 
 	movq %rax,%rdi
 	movq \endkvsep,%rsi
@@ -78,5 +78,7 @@ main_bot_loop:
 	leaq (updateid_dest),%rsi
 	call _impl_ltoa
 
+	jmp reloop
+reloop:
 	popq %rdi
 	jmp main_bot_loop
