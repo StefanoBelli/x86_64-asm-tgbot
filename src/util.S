@@ -6,6 +6,12 @@
 	.extern SSL_write
 	.extern SSL_read
 
+	//MACRO: sys_write
+	//MACRO: sys_read
+	//MACRO: sys_open
+	//MACRO: sys_close
+	//MACRO: MAYBE MORE
+
 ## SEGMENT ##
 	.bss
 	.lcomm http_get_query 4096 #change this if strictly required

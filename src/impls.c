@@ -18,7 +18,7 @@
 #define TGHOST "api.telegram.org"
 #define HTTPS "https"
 #define UAGENT "asmx86bot"
-#define BOTOP_TIMEOUT "30"
+#define BOTOP_GETUPDATES_TIMEOUT "30"
 
 void _impl_OpenSSL_add_all_algorithms() 
 {
@@ -52,6 +52,10 @@ void _impl_daemon()
 
 	if(setsid() < 0)
 		exit(1);
+	
+	close(0);
+	close(1);
+	close(2);
 }
 
 void _impl_compose_http_get_query(const char* request, char* dest)
@@ -77,10 +81,12 @@ void _impl_get_value_from_kvpair(const char* resp, const char *sep, char* dest)
 	dest[i]=0;
 }
 
-void _impl_compose_botop(const char* off, char* dest)
+void _impl_getupdates_botop(const char* off, char* dest)
 {
-	snprintf(dest,MAX_BOTOP_SIZE,"getUpdates?timeout="BOTOP_TIMEOUT"&offset=%s&limit=1",off);
+	snprintf(dest,MAX_BOTOP_SIZE,"getUpdates?timeout="BOTOP_GETUPDATES_TIMEOUT"&offset=%s&limit=1",off);
 }
+
+//void _impl_sendmessage_botop(...)
 
 void _impl_ltoa(long n, char* ntoa)
 {

@@ -8,7 +8,7 @@
 	.extern strstr
 	.extern strtok
 	.extern _impl_get_value_from_kvpair
-	.extern _impl_compose_botop
+	.extern _impl_getupdates_botop
 	.extern _impl_ltoa
 
 	.macro match_key haystack,needle,kvsep,endkvsep,dest
@@ -60,7 +60,7 @@ main_bot_loop:
 
 	movq $updateid_dest,%rdi
 	leaq (query),%rsi
-	call _impl_compose_botop
+	call _impl_getupdates_botop
 
 	popq %rdi
 	pushq %rdi
