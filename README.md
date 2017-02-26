@@ -9,6 +9,15 @@
 
 **READ: I would appreciate, if you make improvements, a pull request, so everyone will benefit. Thank you**
 
+### Working environment
+ 
+ *Intel Core i5 6600*
+ 
+ - GNU/Linux (Gentoo Linux)
+ - GCC version: 4.9.4 / 6.3.0
+ - Binutils version: 2.25.1 (includes GNU Assembler and GNU Linker)
+ - openssl version: 1.0.2
+
 ### What the hell is going on?
 Just 4fun Telegram Bot. I'll write most of the things in *assembly*, other, if needed, in C (C11).
 
