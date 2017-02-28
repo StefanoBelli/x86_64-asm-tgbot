@@ -41,17 +41,36 @@
 
 ## SEGMENT ##
 	.data
+text:
+	.asciz "\"text\""
 update_id:
 	.asciz "\"update_id\""
 kv_pair_sepr:
 	.asciz ":"
-kv_pair_end:
+update_kv_pair_end:
 	.asciz ","
+text_kv_pair_end:
+	.asciz "}"
+id:
+	.asciz "\"id\""
+expected_noupdates:
+	.asciz "\"result\":[]"
+got_an_update:
+	.asciz "Update received\n"
+log_stdout:
+	.asciz "stdout"
+log_stderr:
+	.asciz "stderr"
+
+#filename:
+#  .asciz "fname"
 
 ## SEGMENT ##
 	.bss
 	.lcomm query 100
 	.lcomm updateid_dest 50
+	.lcomm text_dest 500
+	.lcomm id_dest 50
 
 ## SEGMENT ##
 	.text
@@ -67,7 +86,28 @@ main_bot_loop:
 	movq $query,%rsi
 	call https_get_request
 
-   match_key %rax,$update_id,$kv_pair_sepr,$kv_pair_end,updateid_dest
+	pushq %rax
+
+	movq %rax,%rdi
+	movq $expected_noupdates,%rsi
+	call strstr
+	cmp $0,%rax
+	jne reloop_noupdates
+
+	movq $got_an_update,%rdi
+	movq $16,%rsi
+	call logev
+
+	popq %rax
+	pushq %rax
+	match_key %rax,$text,$kv_pair_sepr,$text_kv_pair_end,text_dest
+
+	popq %rax
+	pushq %rax
+	match_key %rax,$id,$kv_pair_sepr,$update_kv_pair_end,id_dest
+
+	popq %rax
+   match_key %rax,$update_id,$kv_pair_sepr,$update_kv_pair_end,updateid_dest
 
 	movq $updateid_dest,%rdi
 	call atol
@@ -79,6 +119,12 @@ main_bot_loop:
 	call _impl_ltoa
 
 	jmp reloop
+
 reloop:
+	popq %rdi
+	jmp main_bot_loop
+
+reloop_noupdates:
+	popq %rax
 	popq %rdi
 	jmp main_bot_loop

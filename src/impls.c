@@ -79,6 +79,7 @@ void _impl_get_value_from_kvpair(const char* resp, const char *sep, char* dest)
 	}
 	
 	dest[i]=0;
+	//printf("kvpair - got this: %s\n",dest);
 }
 
 void _impl_getupdates_botop(const char* off, char* dest)
