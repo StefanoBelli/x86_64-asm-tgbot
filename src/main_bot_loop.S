@@ -55,12 +55,10 @@ id:
 	.asciz "\"id\""
 expected_noupdates:
 	.asciz "\"result\":[]"
+expected_apiret_ok:
+    .asciz "\"ok\":true"
 got_an_update:
 	.asciz "Update received\n"
-log_stdout:
-	.asciz "stdout"
-log_stderr:
-	.asciz "stderr"
 
 #filename:
 #  .asciz "fname"
