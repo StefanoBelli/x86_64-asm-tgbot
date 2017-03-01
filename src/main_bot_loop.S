@@ -94,10 +94,6 @@ main_bot_loop:
 	cmp $0,%rax
 	jne reloop_noupdates
 
-	movq $got_an_update,%rdi
-	movq $16,%rsi
-	call logev
-
 	popq %rax
 	pushq %rax
 	match_key %rax,$text,$kv_pair_sepr,$text_kv_pair_end,text_dest
