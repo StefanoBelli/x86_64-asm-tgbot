@@ -1,11 +1,11 @@
 	.global failure
 	.global https_get_request
 	.global parse_http_response
+    .global logev
 
 	.extern _impl_compose_http_get_query
 	.extern SSL_write
 	.extern SSL_read
-
 
 ## SEGMENT ##
 	.bss
@@ -49,3 +49,12 @@ https_get_request:
 
 	movq $http_get_response,%rax
 	ret
+
+/* Required:
+   -RDI register: filename
+   -RSI register: string to be logged
+   -RDX register: lenght
+*/
+logev:
+   ret
+  
