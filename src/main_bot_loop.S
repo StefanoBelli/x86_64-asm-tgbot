@@ -86,6 +86,15 @@ main_bot_loop:
 
 	pushq %rax
 
+    movq %rax,%rdi
+    movq $expected_apiret_ok,%rsi
+    call strstr
+    cmp $0,%rax
+    je reloop_noupdates
+
+    popq %rax
+    pushq %rax
+    
 	movq %rax,%rdi
 	movq $expected_noupdates,%rsi
 	call strstr
