@@ -1,7 +1,10 @@
-# [WIP|WORK IN PROGRESS] x86_64-asm-tgbot
 [![Travis](https://img.shields.io/travis/StefanoBelli/x86_64-asm-tgbot.svg)]()
 [![GitHub release](https://img.shields.io/github/tag/StefanoBelli/x86_64-asm-tgbot.svg)]()
 [![Copyleft software](https://img.shields.io/badge/no%20license-copyleft-blue.svg)]()
+
+# x86_64-asm-tgbot
+
+I am stopping this for now, this is a very wasting-time project! As I say, feel free to fork and continue your own way
 
 **READ: THIS IS ABSOLUTELY COPYLEFT SOFTWARE, YOU CAN DO WHATEVER YOU WANT WITH IT. I WOULD APPRECIATE IF YOU MENTION/REF ME IN YOUR OWN PROJECT, BUT, THIS IS NOT NECESSARY. THANKSSSS <3U**
 
