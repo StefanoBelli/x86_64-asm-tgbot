@@ -1,7 +1,7 @@
 	.global failure
 	.global https_get_request
 	.global parse_http_response
-    .global logev
+	.global logev
 
 	.extern _impl_compose_http_get_query
 	.extern SSL_write
@@ -56,5 +56,5 @@ https_get_request:
    -RDX register: lenght
 */
 logev:
-   ret
+	ret
   

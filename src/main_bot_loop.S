@@ -56,7 +56,7 @@ id:
 expected_noupdates:
 	.asciz "\"result\":[]"
 expected_apiret_ok:
-    .asciz "\"ok\":true"
+	.asciz "\"ok\":true"
 got_an_update:
 	.asciz "Update received\n"
 
@@ -86,14 +86,14 @@ main_bot_loop:
 
 	pushq %rax
 
-    movq %rax,%rdi
-    movq $expected_apiret_ok,%rsi
-    call strstr
-    cmp $0,%rax
-    je reloop_noupdates
+	movq %rax,%rdi
+	movq $expected_apiret_ok,%rsi
+	call strstr
+	cmp $0,%rax
+	je reloop_noupdates
 
-    popq %rax
-    pushq %rax
+	popq %rax
+	pushq %rax
     
 	movq %rax,%rdi
 	movq $expected_noupdates,%rsi
@@ -110,7 +110,7 @@ main_bot_loop:
 	match_key %rax,$id,$kv_pair_sepr,$update_kv_pair_end,id_dest
 
 	popq %rax
-   match_key %rax,$update_id,$kv_pair_sepr,$update_kv_pair_end,updateid_dest
+	match_key %rax,$update_id,$kv_pair_sepr,$update_kv_pair_end,updateid_dest
 
 	movq $updateid_dest,%rdi
 	call atol
