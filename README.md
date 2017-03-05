@@ -4,7 +4,11 @@
 
 # x86_64-asm-tgbot
 
-I am stopping this for now, this is a very wasting-time project! As I say, feel free to fork and continue your own way
+## WARNING
+
+You will surely get into a segmentation fault, spotted into libcrypto, still don't know HOW and WHY is this possible (check init_ssl_ctx function, the SEGV happens right there)
+
+I am stopping this for now, this is a very time-wasting project! As I say, feel free to fork and continue your own way
 
 **READ: THIS IS ABSOLUTELY COPYLEFT SOFTWARE, YOU CAN DO WHATEVER YOU WANT WITH IT. I WOULD APPRECIATE IF YOU MENTION/REF ME IN YOUR OWN PROJECT, BUT, THIS IS NOT NECESSARY. THANKSSSS <3U**
 
